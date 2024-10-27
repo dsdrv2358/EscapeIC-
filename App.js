@@ -29,29 +29,29 @@ const WilliamsHallMap = ({ navigation }) => {
       <TouchableOpacity
         style={styles.roomButton}
         onPress={() => {
-          console.log("Navigating to CS Lab Puzzle"); // Debugging log
-          navigation.navigate('Puzzle', { roomName: 'CS Lab' });
+          console.log("Navigating to CS Lounge 306 Puzzle"); // Debugging log
+          navigation.navigate('Puzzle', { roomName: 'CS Lounge 306' });
         }}
       >
-        <Text style={styles.roomButtonText}>CS Lab</Text>
+        <Text style={styles.roomButtonText}>CS Lounge 306</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.roomButton}
         onPress={() => {
-          console.log("Navigating to Auditorium Puzzle"); // Debugging log
-          navigation.navigate('Puzzle', { roomName: 'Auditorium' });
+          console.log("Navigating to Lecture Hall 225 Puzzle"); // Debugging log
+          navigation.navigate('Puzzle', { roomName: 'Lecture Hall 225' });
         }}
       >
-        <Text style={styles.roomButtonText}>Auditorium</Text>
+        <Text style={styles.roomButtonText}>Lecture Hall 225</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.roomButton}
         onPress={() => {
-          console.log("Navigating to Library Puzzle"); // Debugging log
-          navigation.navigate('Puzzle', { roomName: 'Library' });
+          console.log("Navigating to Mobile Development 309 Puzzle"); // Debugging log
+          navigation.navigate('Puzzle', { roomName: 'Mobile Development 309' });
         }}
       >
-        <Text style={styles.roomButtonText}>Library</Text>
+        <Text style={styles.roomButtonText}>Mobile Development 309</Text>
       </TouchableOpacity>
     </View>
   );
