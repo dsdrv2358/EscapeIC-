@@ -7,27 +7,20 @@ export default function HomeScreen({ navigation }) {
     <LinearGradient colors={['#8B0000', '#1A1A1A']} style={styles.background}>
       <View style={styles.container}>
         {/* Title */}
-        <Text style={styles.title}> Escape IC!</Text>
+        <Text style={styles.title}>Escape IC!</Text>
 
         {/* Start Game Button */}
         <TouchableOpacity 
           style={styles.startButton} 
-          onPress={() => navigation.navigate('GameScreen')}>
+          onPress={() => navigation.navigate('Elevator')}>
           <Text style={styles.buttonText}>Start Game</Text>
         </TouchableOpacity>
 
         {/* Instructions Button */}
         <TouchableOpacity 
           style={styles.secondaryButton} 
-          onPress={() => navigation.navigate('Instructions')}>
+          onPress={() => navigation.navigate('InstructionsScreen')}>
           <Text style={styles.buttonText}>Instructions</Text>
-        </TouchableOpacity>
-
-        {/* Settings Button */}
-        <TouchableOpacity 
-          style={styles.secondaryButton} 
-          onPress={() => navigation.navigate('Settings')}>
-          <Text style={styles.buttonText}>Settings</Text>
         </TouchableOpacity>
       </View>
     </LinearGradient>
