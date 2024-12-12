@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View, Image, ImageBackground, TouchableOpacity, Button, PanResponder } from 'react-native';
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
+import { useNavigation } from '@react-navigation/native'; // Import the navigation hook
 
 export default function PuzzleJohn() {
-  const navigation = useNavigation(); // Initialize navigation
   const [pieceVisible, setPieceVisible] = useState(true);
   const [puzzleComplete, setPuzzleComplete] = useState(false);
   const [showCompletion, setCompletionPic] = useState(false);
   const [arrow, setMyArrow] = useState(false);
+
+  const navigation = useNavigation(); // Use the navigation hook
+
+  const isPuzzleComplete = () => {
+    return piecesState.every(piece => piece.isSnapped);
+  };
 
   const pieces = [
     { name: 'JohnTopLeft', position: { x: 300, y: 350 }, target: { x: 1.5, y: 4 }, isSnapped: false },
@@ -38,10 +43,6 @@ export default function PuzzleJohn() {
 
   const [piecesState, setPieces] = useState(pieces);
 
-  const isPuzzleComplete = () => {
-    return piecesState.every(piece => piece.isSnapped);
-  };
-
   const createPanResponder = (index) => {
     return PanResponder.create({
       onStartShouldSetPanResponder: () => !piecesState[index].isSnapped,
@@ -59,20 +60,20 @@ export default function PuzzleJohn() {
           const piece = updatedPieces[index];
           const target = piece.target;
 
-          if (target) {
+          // Calculate the distance
+          if (target) { 
             const distance = Math.sqrt(
               Math.pow(piece.position.x - target.x, 2) +
               Math.pow(piece.position.y - target.y, 2)
             );
 
-            const threshold = 20;
+            const threshold = 20; // Define how close to snap (in pixels)
 
+            // Snap to target if within threshold
             if (distance < threshold) {
-              piece.position = { x: target.x, y: target.y };
+              piece.position = { x: target.x, y: target.y }; // Snap to target position
               piece.isSnapped = true;
             }
-          } else {
-            console.warn(`Target for piece ${piece.name} is not defined.`);
           }
 
           if (isPuzzleComplete()) {
@@ -86,6 +87,13 @@ export default function PuzzleJohn() {
     });
   };
 
+  const test = () => {
+    setPieceVisible(!pieceVisible);
+    console.log("Piece visibility changed:", !pieceVisible);
+  };
+
+  const puzzleBorder = require('./assets/puzzle-images/JohnPuzzleBorder.png');
+
   return (
     <ImageBackground
       source={require('./assets/puzzle-images/greatwallJohn.png')}
@@ -94,8 +102,8 @@ export default function PuzzleJohn() {
     >
       <View style={styles.innerContainer}>
         {pieceVisible && !arrow && (
-          <TouchableOpacity onPress={() => setPieceVisible(!pieceVisible)}>
-            <Image
+          <TouchableOpacity onPress={test}>
+            <Image 
               source={require('./assets/puzzle-images/puzzlePieces.png')}
               style={[styles.puzzlePiece, { zIndex: 2 }]}
             />
@@ -107,18 +115,18 @@ export default function PuzzleJohn() {
             <Image
               source={require('./assets/puzzle-images/arrowRight.png')}
               style={styles.arrowRight}
-            />
+            />            
           </TouchableOpacity>
         )}
 
         {!pieceVisible && !arrow && (
           <View>
-            <Image source={require('./assets/puzzle-images/JohnPuzzleBorder.png')} />
+            <Image source={puzzleBorder} />
 
             {piecesState
               .sort((a, b) => (b.isSnapped ? 1 : 0) - (a.isSnapped ? 1 : 0))
               .map((piece, index) => (
-                <Image
+                <Image 
                   key={piece.name}
                   source={imageMap[piece.name]}
                   style={[{ position: 'absolute', top: piece.position.y, left: piece.position.x, zIndex: piece.isSnapped ? 0 : 1 }]}
@@ -127,23 +135,26 @@ export default function PuzzleJohn() {
               ))}
 
             {showCompletion && (
-              <Image
+              <Image 
                 source={completionImage}
                 style={styles.completionImage}
               />
             )}
 
-            <Button
-              title="Close Puzzle"
-              onPress={() => {
-                setPieceVisible(true);
-                setCompletionPic(false);
-                if (puzzleComplete) {
-                  setMyArrow(true);
-                }
-                navigation.goBack(); // Navigate back to the previous screen
-              }}
-            />
+            {/* Center the button at the bottom */}
+            <View style={styles.buttonWrapper}>
+              <Button
+                title="Close Puzzle"
+                onPress={() => {
+                  test(); // Toggle piece visibility
+                  setCompletionPic(false); // Hide the completion image
+                  if (puzzleComplete === true) {
+                    setMyArrow(true);
+                  }
+                  navigation.goBack(); // This will go back to the previous screen
+                }}
+              />
+            </View>
           </View>
         )}
       </View>
@@ -175,6 +186,15 @@ const styles = StyleSheet.create({
   arrowRight: {
     left: 180,
     width: 30,
-    height: 30,
+    height: 30
+  },
+  // Center the button at the bottom
+  buttonWrapper: {
+    position: 'absolute',
+    bottom: 20,
+    left: 0,
+    right: 0,
+    alignItems: 'center',  
+    zIndex: 10, 
   },
 });
